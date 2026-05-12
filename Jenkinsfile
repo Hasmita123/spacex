@@ -28,7 +28,7 @@ pipeline{
         stage('push image'){
             steps{
                 script{
-                    withDockerRegistry([credentialsId: 'd24ba0aa-eb82-42c5-8194-6d8c2e48853d']) {
+                    withDockerRegistry([credentialsId: '729a0b31-7b58-496e-8986-da75854a5c45']) {
 
                         sh 'docker tag web-app:$TAG hasmita123/web-app1:v$TAG'
 

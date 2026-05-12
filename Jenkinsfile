@@ -21,7 +21,7 @@ pipeline{
 
         stage('docker image'){
             steps{
-                sh 'docker build -t web-app:$TAG .'
+                sh "docker build -t web-app:$TAG ."
             }
         }
 
@@ -30,9 +30,9 @@ pipeline{
                 script{
                     withDockerRegistry([credentialsId: '729a0b31-7b58-496e-8986-da75854a5c45']) {
 
-                        sh 'docker tag web-app:$TAG hasmita123/web-app1:v$TAG'
+                        sh "docker tag web-app:$TAG hasmita123/web-app1:v$TAG"
 
-                        sh 'docker push hasmita123/web-app1:v$TAG'
+                        sh "docker push hasmita123/web-app1:v$TAG"
                     }
                 }
             }
@@ -43,7 +43,7 @@ pipeline{
 
                 sh 'docker rm -f web-app-container || true'
 
-                sh 'docker run -d --name web-app-container -p 9191:80 web-app:$TAG'
+                sh "docker run -d --name web-app-container -p 9191:80 web-app:$TAG"
             }
         }
     }

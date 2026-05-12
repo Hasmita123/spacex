@@ -40,7 +40,7 @@ pipeline{
         success{
 	        emailext(
 	            subject:'Deployment successful',
-		    	body:'Application deployed successfully. URL:http://<publicip>:8080',
+		    	body:'Application deployed successfully. The IP Address with port number is http://13.61.153.32:80/',
 		    	to:'siddardha070@gmail.com','hasmita1919@gmail.com'.
 	    	)
 		}

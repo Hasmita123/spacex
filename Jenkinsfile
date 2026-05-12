@@ -5,15 +5,15 @@ pipeline{
     }
     stages{
     	stage('git clone'){
-	    steps{
-	        git 'https://github.com/Hasmita123/spacex.git'
-	    }
-	}
-	stage('upload files'){
-	    steps{
-	        sh 'aws s3 cp . s3//web-app-project1.aws'
-	    }
-	}
+	        steps{
+	            git 'https://github.com/Hasmita123/spacex.git'
+	        }
+        }
+		stage('upload files'){
+	    	steps{
+	        	sh 'aws s3 cp . s3//web-app-project1.aws'
+	    	}
+		}
         stage('docker image'){
             steps{
                 sh 'docker build -t web-app:$TAG .'
@@ -26,12 +26,11 @@ pipeline{
 		                sh 'docker tag web-app:$TAG hasmita123/web-app1:v$TAG'
 
                         sh 'docker push hasmita123/web-app1:v$TAG'
-
                     }
                 }
             }
         }
-	stage('docker container'){
+		stage('docker container'){
             steps{
                 sh 'docker run -d -p 8080:80 web-app:$TAG'
             }

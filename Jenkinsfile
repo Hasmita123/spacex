@@ -11,7 +11,7 @@ pipeline{
         }
 		stage('upload files'){
 	    	steps{
-	        	sh 'aws s3 cp * s3://web-app-project1.aws --recursive'
+	        	sh 'aws s3 cp . s3://web-app-project1.aws --recursive'
 	    	}
 		}
         stage('docker image'){

@@ -71,10 +71,7 @@ pipeline {
 
                 Access Application:
                 http://${PUBLIC_IP}:9292
-                """,
-
-                mimeType: 'text/plain',
-                attachLog: true
+                """
             )
         }
 
@@ -95,10 +92,7 @@ pipeline {
                 ${PUBLIC_IP}
 
                 Check Jenkins Console Output for errors.
-                """,
-
-                mimeType: 'text/plain',
-                attachLog: true
+                """
             )
         }
     }

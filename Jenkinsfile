@@ -61,17 +61,17 @@ pipeline {
                 subject: "Build Success - ${JOB_NAME} #${BUILD_NUMBER}",
 
                 body: """
-Application deployed successfully.
+                Application deployed successfully.
 
-Job Name: ${JOB_NAME}
-Build Number: ${BUILD_NUMBER}
+                Job Name: ${JOB_NAME}
+                Build Number: ${BUILD_NUMBER}
 
-Docker Image:
-hasmita123/${IMAGE_NAME}:${TAG}
+                Docker Image:
+                hasmita123/${IMAGE_NAME}:${TAG}
 
-Access Application:
-http://${PUBLIC_IP}:9292
-""",
+                Access Application:
+                http://${PUBLIC_IP}:9292
+                """,
 
                 mimeType: 'text/plain',
                 attachLog: true
@@ -86,16 +86,16 @@ http://${PUBLIC_IP}:9292
                 subject: "Build Failed - ${JOB_NAME} #${BUILD_NUMBER}",
 
                 body: """
-Build failed.
+                Build failed.
 
-Job Name: ${JOB_NAME}
-Build Number: ${BUILD_NUMBER}
+                Job Name: ${JOB_NAME}
+                Build Number: ${BUILD_NUMBER}
 
-Server IP:
-${PUBLIC_IP}
+                Server IP:
+                ${PUBLIC_IP}
 
-Check Jenkins Console Output for errors.
-""",
+                Check Jenkins Console Output for errors.
+                """,
 
                 mimeType: 'text/plain',
                 attachLog: true

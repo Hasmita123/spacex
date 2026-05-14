@@ -37,8 +37,6 @@ pipeline {
                     sh "docker tag ${IMAGE_NAME}:${TAG} hasmita123/${IMAGE_NAME}:${TAG}"
 
                     sh "docker push hasmita123/${IMAGE_NAME}:${TAG}"
-
-                    sh "docker ps"
                 }
             }
         }
@@ -59,11 +57,6 @@ pipeline {
 
             emailext(
                 to: 'siddardha070@gmail.com,hasmita1919@gmail.com',
-
-                recipientProviders: [
-                    [$class: 'DevelopersRecipientProvider'],
-                    [$class: 'RequesterRecipientProvider']
-                ],
 
                 subject: "Build Success - ${JOB_NAME} #${BUILD_NUMBER}",
 
@@ -89,11 +82,6 @@ http://${PUBLIC_IP}:9292
 
             emailext(
                 to: 'siddardha070@gmail.com,hasmita1919@gmail.com',
-
-                recipientProviders: [
-                    [$class: 'DevelopersRecipientProvider'],
-                    [$class: 'RequesterRecipientProvider']
-                ],
 
                 subject: "Build Failed - ${JOB_NAME} #${BUILD_NUMBER}",
 

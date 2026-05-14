@@ -60,6 +60,11 @@ pipeline {
             emailext(
                 to: 'siddardha070@gmail.com,hasmita1919@gmail.com',
 
+                recipientProviders: [
+                    [$class: 'DevelopersRecipientProvider'],
+                    [$class: 'RequesterRecipientProvider']
+                ],
+
                 subject: "Build Success - ${JOB_NAME} #${BUILD_NUMBER}",
 
                 body: """
@@ -73,7 +78,10 @@ hasmita123/${IMAGE_NAME}:${TAG}
 
 Access Application:
 http://${PUBLIC_IP}:9292
-"""
+""",
+
+                mimeType: 'text/plain',
+                attachLog: true
             )
         }
 
@@ -81,6 +89,11 @@ http://${PUBLIC_IP}:9292
 
             emailext(
                 to: 'siddardha070@gmail.com,hasmita1919@gmail.com',
+
+                recipientProviders: [
+                    [$class: 'DevelopersRecipientProvider'],
+                    [$class: 'RequesterRecipientProvider']
+                ],
 
                 subject: "Build Failed - ${JOB_NAME} #${BUILD_NUMBER}",
 
@@ -94,7 +107,10 @@ Server IP:
 ${PUBLIC_IP}
 
 Check Jenkins Console Output for errors.
-"""
+""",
+
+                mimeType: 'text/plain',
+                attachLog: true
             )
         }
     }

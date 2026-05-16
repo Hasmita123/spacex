@@ -1,98 +1,68 @@
-pipeline {
+pipeline{
     agent any
 
-    environment {
-        IMAGE_NAME = "web-app"
-        TAG = "build-${BUILD_NUMBER}"
-        PUBLIC_IP = "13.63.20.49"
+    environment{
+        TAG = "${BUILD_ID}"
     }
 
-    stages {
+    stages{
 
-        stage('Git Clone') {
-            steps {
+        stage('git clone'){
+            steps{
                 git 'https://github.com/Hasmita123/spacex.git'
             }
         }
 
-        stage('Upload to S3') {
-            steps {
-                sh 'aws s3 cp . s3://web-app-project1.aws --recursive --exclude ".git/*"'
+        stage('upload files'){
+            steps{
+                sh 'aws s3 cp . s3://web-app-project1.aws --recursive'
             }
         }
 
-        stage('Docker Build') {
-            steps {
-                sh "docker build -t ${IMAGE_NAME}:${TAG} ."
+        stage('docker image'){
+            steps{
+                sh "docker build -t web-app:$TAG ."
             }
         }
 
-        stage('Docker Push') {
-            steps {
+        stage('push image'){
+            steps{
+                script{
+                    withDockerRegistry([credentialsId: '729a0b31-7b58-496e-8986-da75854a5c45']) {
 
-                withDockerRegistry(
-                    [credentialsId: '729a0b31-7b58-496e-8986-da75854a5c45',
-                     url: 'https://index.docker.io/v1/']) {
+                        sh "docker tag web-app:$TAG hasmita123/web-app1:v$TAG"
 
-                    sh "docker tag ${IMAGE_NAME}:${TAG} hasmita123/${IMAGE_NAME}:${TAG}"
-
-                    sh "docker push hasmita123/${IMAGE_NAME}:${TAG}"
+                        sh "docker push hasmita123/web-app1:v$TAG"
+                    }
                 }
             }
         }
 
-        stage('Docker Run') {
-            steps {
+        stage('docker container'){
+            steps{
 
-                sh 'docker rm -f web-app-container >/dev/null 2>&1 || true'
+                sh 'docker rm -f web-app-container || true'
 
-                sh "docker run -d --name web-app-container -p 9292:80 hasmita123/${IMAGE_NAME}:${TAG}"
+                sh "docker run -d --name web-app-container -p 9191:80 web-app:$TAG"
             }
         }
     }
 
-    post {
+    post{
 
-        success {
-
+        success{
             emailext(
-                to: 'siddardha070@gmail.com, hasmita1919@gmail.com',
-
-                subject: "Build Success - ${JOB_NAME} #${BUILD_NUMBER}",
-
-                body: """
-                Application deployed successfully.
-
-                Job Name: ${JOB_NAME}
-                Build Number: ${BUILD_NUMBER}
-
-                Docker Image:
-                hasmita123/${IMAGE_NAME}:${TAG}
-
-                Access Application:
-                http://${PUBLIC_IP}:9292
-                """
+                subject: 'Deployment successful',
+                body: 'Application deployed successfully. The IP Address with port number is http://13.61.153.32:9090/',
+                to: 'siddardha070@gmail.com,hasmita1919@gmail.com'
             )
         }
 
-        failure {
-
+        failure{
             emailext(
-                to: 'siddardha070@gmail.com, hasmita1919@gmail.com',
-
-                subject: "Build Failed - ${JOB_NAME} #${BUILD_NUMBER}",
-
-                body: """
-                Build failed.
-
-                Job Name: ${JOB_NAME}
-                Build Number: ${BUILD_NUMBER}
-
-                Server IP:
-                ${PUBLIC_IP}
-
-                Check Jenkins Console Output for errors.
-                """
+                subject: 'Deployment failed',
+                body: 'Application deployment failed.',
+                to: 'siddardha070@gmail.com,hasmita1919@gmail.com'
             )
         }
     }

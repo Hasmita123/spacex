@@ -4,7 +4,7 @@ pipeline {
     environment {
         IMAGE_NAME = "web-app"
         TAG = "build-${BUILD_NUMBER}"
-        PUBLIC_IP = "13.63.20.49"
+        PUBLIC_IP = "13.53.218.195"
     }
 
     stages {
